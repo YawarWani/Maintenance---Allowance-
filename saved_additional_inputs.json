@@ -1,0 +1,17 @@
+{
+    "army_number": "IC77512L",
+    "source_income_wife": "1",
+    "employment_details": "2",
+    "support_details": "2",
+    "custody_children": "3",
+    "living_standard": "4",
+    "health_wife": "5",
+    "health_children": "6",
+    "education_expenses": "7",
+    "shelter_wife": "8",
+    "shelter_children": "9",
+    "expenses_liabilities_individual": "10",
+    "expenses_liabilities_spouse": "11",
+    "evaluation_abuse": "12",
+    "chances_reconciliation": "123"
+}

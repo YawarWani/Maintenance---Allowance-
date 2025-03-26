@@ -1,0 +1,52 @@
+{
+    "canteen_card": "yes",
+    "mec": "yes",
+    "dependent_card": "yes",
+    "joint_acct": "yes",
+    "sf_accommodation": "yes",
+    "joint_acct_no": "123",
+    "joint_banker": "123",
+    "joint_ifsc": "123"
+}
+{
+    "canteen_card": "yes",
+    "mec": "yes",
+    "dependent_card": "yes",
+    "joint_acct": "yes",
+    "sf_accommodation": "no",
+    "joint_acct_no": "98767890",
+    "joint_banker": "SBI",
+    "joint_ifsc": "SBIN0009879"
+}
+{
+    "canteen_card": "yes",
+    "mec": "yes",
+    "dependent_card": "yes",
+    "joint_acct": "no",
+    "sf_accommodation": "yes",
+    "joint_acct_no": null,
+    "joint_banker": null,
+    "joint_ifsc": null
+}
+{
+    "army_number": "IC77512L",
+    "canteen_card": "yes",
+    "mec": "yes",
+    "dependent_card": "yes",
+    "joint_acct": "no",
+    "sf_accommodation": "yes",
+    "joint_acct_no": null,
+    "joint_banker": null,
+    "joint_ifsc": null
+}
+{
+    "army_number": "IC11234X",
+    "canteen_card": "yes",
+    "mec": "yes",
+    "dependent_card": "yes",
+    "joint_acct": "no",
+    "sf_accommodation": "yes",
+    "joint_acct_no": null,
+    "joint_banker": null,
+    "joint_ifsc": null
+}

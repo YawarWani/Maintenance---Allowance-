@@ -1,0 +1,122 @@
+[
+    {
+        "name": "Saumya",
+        "relation": "Wife/Spouse",
+        "dob": "1990-08-03",
+        "age": "34",
+        "education": "",
+        "part_ii_child": "",
+        "part_ii_marriage": "12432",
+        "remarks": "NA"
+    },
+    {
+        "name": "Anaysha",
+        "relation": "Daughter",
+        "dob": "2020-11-25",
+        "age": "4",
+        "education": "Below Class X",
+        "part_ii_child": "1325743",
+        "part_ii_marriage": "",
+        "remarks": "Na"
+    }
+]
+[
+    {
+        "name": "Saumya",
+        "relation": "Wife/Spouse",
+        "dob": "1990-08-03",
+        "age": "34",
+        "education": "",
+        "part_ii_child": "",
+        "part_ii_marriage": "",
+        "remarks": "87654321"
+    },
+    {
+        "name": "Anaysha",
+        "relation": "Daughter",
+        "dob": "2020-11-28",
+        "age": "4",
+        "education": "Below Class X",
+        "part_ii_child": "876545678",
+        "part_ii_marriage": "Yes",
+        "remarks": ""
+    }
+]
+[
+    {
+        "name": "Saumya",
+        "relation": "Wife/Spouse",
+        "dob": "1990-08-03",
+        "age": "34",
+        "education": "",
+        "part_ii_child": "",
+        "part_ii_marriage": "",
+        "remarks": "123456789"
+    },
+    {
+        "name": "Anaysha",
+        "relation": "Daughter",
+        "dob": "2020-11-28",
+        "age": "4",
+        "education": "Below Class X",
+        "part_ii_child": "123456",
+        "part_ii_marriage": "Yes",
+        "remarks": ""
+    }
+]
+[
+    {
+        "name": "aaa",
+        "relation": "Mother",
+        "dob": "2025-03-13",
+        "age": "-1",
+        "education": "",
+        "part_ii_child": "",
+        "part_ii_marriage": "",
+        "remarks": ""
+    }
+]
+[
+    {
+        "name": "Saumya",
+        "relation": "Wife/Spouse",
+        "dob": "1990-08-03",
+        "age": "34",
+        "education": "",
+        "part_ii_child": "",
+        "part_ii_marriage": "",
+        "remarks": "1234"
+    },
+    {
+        "name": "Anaysha",
+        "relation": "Daughter",
+        "dob": "2020-11-25",
+        "age": "4",
+        "education": "Below Class X",
+        "part_ii_child": "1234",
+        "part_ii_marriage": "Yes",
+        "remarks": ""
+    }
+]
+[
+    {
+        "name": "Isha Sharma",
+        "relation": "Wife/Spouse",
+        "dob": "1990-08-03",
+        "age": "34",
+        "education": "",
+        "part_ii_child": "",
+        "part_ii_marriage": "",
+        "remarks": "12334"
+    },
+    {
+        "name": "Tanmay",
+        "relation": "Son",
+        "dob": "2020-11-28",
+        "age": "4",
+        "education": "Below Class X",
+        "part_ii_child": "32145",
+        "part_ii_marriage": "Yes",
+        "remarks": ""
+    }
+]
