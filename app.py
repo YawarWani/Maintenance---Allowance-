@@ -1355,151 +1355,7 @@ def submit_all_children_ma():
         print(f"[ERROR] Failed to submit all children's MA: {e}\n")
         return jsonify({'success': False, 'message': str(e)}), 500
     
-# THIS IS ROUTE FOR DOCUMENT GENERATION 
 
-
-# @app.route("/get_information", methods=["POST"])
-# def get_information():
-#     print("in this route")
-#     data = request.get_json()
-#     army_number = data.get("army_number")
-
-#     if not army_number:
-#         return jsonify({"success": False, "message": "Army Number is required"}), 400
-
-#     try:
-#         # Database connection using context manager
-#         with sqlite3.connect(db_path) as conn:
-#             cursor = conn.cursor()
-
-#             # Fetching basic information
-#             cursor.execute("SELECT name, pcda_acct, unit, rank, date_of_marriage FROM basic_info WHERE army_number = ?", (army_number,))
-#             basic_info_row = cursor.fetchone()
-#             print(f"Fetched basic info: {basic_info_row}")
-#             if not basic_info_row:
-#                 return jsonify({"success": False, "message": "No record found for this Army Number."}), 404
-
-#             name, pcda_acct, unit, rank, date_of_marriage = basic_info_row
-            
-#             # Fetching lady details
-#             cursor.execute(""" 
-#                 SELECT lady_address, lady_banker, lady_acct_number, lady_ifsc, date_of_affidavit 
-#                 FROM lady_details WHERE army_number = ? 
-#             """, (army_number,))
-#             lady_details_row = cursor.fetchone()
-#             print(f"Fetched lady details: {lady_details_row}")
-            
-#             lady_address, lady_banker, lady_acct_number, lady_ifsc, date_of_affidavit = lady_details_row if lady_details_row else ("N/A", "N/A", "N/A", "N/A")
-            
-#             # Fetching next of kin details
-#             cursor.execute("""
-#                 SELECT 
-#                     CASE WHEN relation = 'Wife/Spouse' THEN name ELSE NULL END AS lady_name,
-#                     CASE WHEN relation LIKE '%Daughter%' OR relation LIKE '%Son%' OR relation = 'Child' THEN name ELSE NULL END AS child_name,
-#                     relation,
-#                     date_of_birth
-#                 FROM nok_details WHERE army_number = ?;
-#             """, (army_number,))
-#             nok_rows = cursor.fetchall()
-#             print(f"Fetched NOK details: {nok_rows}")
-
-#             lady_name = None
-#             children = []
-#             son_name=None
-#             for row in nok_rows:
-#                 if not lady_name and row[0]:  # If lady_name is not already assigned
-#                     lady_name = row[0]  # Assign the wife/spouse's name
-#                 child_name = row[1]  # The child's name
-#                 relation = row[2] 
-#                 date_of_birth = row[3]
-#                 if relation and 'Daughter' in relation:
-#                     daughter_name = child_name
-#                     daughter_dob = date_of_birth
-#                 elif relation and 'Son' in relation:
-#                     son_name = child_name
-#                     son_dob = date_of_birth
-
-#                 # Collecting all child names
-#                 if child_name:
-#                     children.append(child_name)
-
-#             children_str = ", ".join(children) if children else "None"
-#             print(f"Children: {children_str}")
-
-#             # Fetching legal case details
-#             cursor.execute("SELECT date_of_complaint FROM legal_cases WHERE army_number = ?", (army_number,))
-#             legal_case_row = cursor.fetchone()
-#             date_of_complaint = legal_case_row[0] if legal_case_row else "N/A"
-#             print(f"Fetched legal case info: {date_of_complaint}")
-            
-#             # Fetching document details
-#             cursor.execute("SELECT date_reply_scn FROM documents WHERE army_number = ?", (army_number,))
-#             document_row = cursor.fetchone()
-#             date_reply_scn = document_row[0] if document_row else "N/A"
-#             print(f"Fetched document details: {date_reply_scn}")
-
-#             # Generate dynamic text for the document
-#             dynamic_text = ""
-#             if daughter_name:
-#                 dynamic_text += f"In respect of the daughter Ms {daughter_name}, it will continue till she gets married or gains employment. "
-#             if son_name:
-#                 dynamic_text += f"In respect of the son Master {son_name}, it will continue till he attains 25 years of age or in the event of death of any of the concerned parties. "
-#             dynamic_text += ("In case of the above conditions being met, recovery of the maintenance allowance will be discontinued by PAO (O)/ PAO (OR) concerned on receipt of intimation from the Commanding Officer/ Officer Commanding Unit or Establishment without the need of a separate order for discontinuation signed by the Competent Authority.")
-
-#             # Call the function to summarize the case information
-#             complaint_details = "Details of the complaint here..."
-#             case_description = "Description of the case here..."
-#             affidavit_filename = "C:/Users/Administrator/Downloads/random_affidavit.docx"  # Use the correct file path
-
-
-# #THIS PATH FOR CASE FILE ADJUST AS PER YOUR FOLDER 
-#             casefile = "C:/Users/Administrator/Desktop/latestcode/uploads/Petition_by_lady"
-
-#             summary_result = summarize_case_info(complaint_details, case_description, affidavit_filename)
-
-#             if not summary_result.get("success"):
-#                 return jsonify({"success": False, "message": summary_result.get("message")}), 500
-
-#             summarized_text = summary_result["summarized_text"]
-
-#             # Check if template file exists
-#             if not os.path.exists(template_path):
-#                 return jsonify({"success": False, "message": "Template file not found."}), 500
-
-#             # Load the Word template
-#             doc = Document(template_path)
-
-#             # Replace placeholders in the document
-#             for para in doc.paragraphs:
-#                 para.text = para.text.replace("{{name}}", name)
-#                 para.text = para.text.replace("{{unit}}", unit)
-#                 para.text = para.text.replace("{{rank}}", rank)
-#                 para.text = para.text.replace("{{date_of_marriage}}", date_of_marriage)
-#                 para.text = para.text.replace("{{army_number}}", army_number)
-#                 para.text = para.text.replace("{{lady_name}}", lady_name if lady_name else "N/A")
-#                 para.text = para.text.replace("{{child_name}}", children_str)
-#                 para.text = para.text.replace("{{lady_address}}", lady_address)
-#                 para.text = para.text.replace("{{lady_acct_number}}", lady_acct_number)
-#                 para.text = para.text.replace("{{lady_ifsc}}", lady_ifsc)
-#                 para.text = para.text.replace("{{date_of_affidavit}}", date_of_affidavit)
-#                 para.text = para.text.replace("{{date_of_complaint}}", date_of_complaint)
-#                 para.text = para.text.replace("{{date_reply_scn}}", date_reply_scn)
-#                 para.text = para.text.replace("{{pcda_acct}}", pcda_acct)
-#                 para.text = para.text.replace("{{lady_banker}}", lady_banker)
-#                 para.text = para.text.replace("{{dynamic_text}}", dynamic_text)
-#                 para.text = para.text.replace("{{summarized_text}}", summarized_text)
-                
-
-#             # Save to a BytesIO object
-#             output = BytesIO()
-#             doc.save(output)
-#             output.seek(0)
-
-#             return send_file(output, as_attachment=True, download_name=f"{army_number}_info.docx", mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-
-#     except Exception as e:
-#         logging.error(f"Exception occurred: {e}")
-#         return jsonify({"success": False, "message": str(e)}), 500
 import os
 import sqlite3
 import logging
@@ -1644,6 +1500,23 @@ def get_information():
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
+            
+            # Fetch maintenance percentages
+            cursor.execute("SELECT maintenance_percentage FROM wife_ma WHERE army_number = ?", (army_number,))
+            wife_ma_row = cursor.fetchone()
+            wife_percentage = wife_ma_row[0] if wife_ma_row else "………………….."
+
+
+            cursor.execute("SELECT child_name, maintenance_percentage FROM children_ma WHERE army_number = ?", (army_number,))
+            children_ma_rows = cursor.fetchall()
+
+            if children_ma_rows:
+                child_lines = [f"(b{i+1}) {percentage} % for {name}" for i, (name, percentage) in enumerate(children_ma_rows)
+    ]
+                child_percentages_block = "\n".join(child_lines)
+            else:
+                child_percentages_block = "(b) …………………….. % for daughter(s)/son(s) N/A"
+
 
             cursor.execute("SELECT name, pcda_acct, unit, rank, date_of_marriage FROM basic_info WHERE army_number = ?", (army_number,))
             basic_info_row = cursor.fetchone()
@@ -1746,9 +1619,8 @@ The case has been deliberated upon by the Competent Authority who has found adeq
 ________________________________________
 Accordingly, in exercise of the powers conferred under Section 90(i)/ 91(i) of the Army Act, 1950 (Act 46 of 1950), read with Army Rule 193, as amended, GOC-in-C .............................. Command has accorded sanction for the deduction of ....................... % per month from the pay and allowances of Rk {rank} Name {name} and its payment to Smt/Shri/Miss {lady_name} and for the maintenance of Master {child_name} child/children commencing from the date of the application for maintenance, that is {date_of_complaint}.
 ________________________________________
-in the following manner:
-(a) …………………….. % for wife, Smt {lady_name}
-(b) …………………….. % for daughter(s)/son(s) {child_name} 
+(a) {wife_percentage} % for wife, Smt {lady_name}
+{child_percentages_block}
 ________________________________________
 The deduction of maintenance allowance will continue till the marriage of Smt {lady_name} with the officer/JCO/OR subsists, or till her death, or till death/discharge/retirement of the individual, for a maximum period of three years from the date of sanction of maintenance allowance, whichever is earlier. Smt {lady_name} is advised to file a civil suit for the grant of permanent maintenance allowance, a copy of which may be forwarded to HQ ................................within six months of receipt of this order. In case of delay in the grant of permanent maintenance allowance by Civil Courts, an extension of this maintenance allowance will be considered for a further period of two years, provided a civil suit for maintenance was filed within six months of this order.
 ________________________________________
