@@ -147,7 +147,7 @@ nav button:last-child:hover {
     background-color: #e8f0fe;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
-    justify-content: space-between;
+    justify-content: start;
 }
 
 .form-group label {

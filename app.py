@@ -292,7 +292,7 @@ create_tables()
 
 
 
-@app.route('/submit_basic_info', methods=['POST'])
+@app.route('/submit_basic_info_officer', methods=['POST'])
 def submit_basic_info():
     try:
         print("[DEBUG] Received request to submit basic info")
@@ -301,8 +301,93 @@ def submit_basic_info():
         unit = request.form['unit']
         rank = request.form['rank']
         name = request.form['name']
-        pcda_acct = request.form['pcda-acct']
-        date_of_enrolment = request.form['date-of-enrolment']
+        pcda_acct = request.form.get('pcda-acct') or None
+        date_of_enrolment = request.form.get('date-of-enrolment') or None
+
+        date_of_present_rank = request.form['date-of-present-rank']
+        date_of_retirement = request.form['date-of-retirement']
+        date_of_marriage = request.form['date-of-marriage']
+        hra = request.form['hra']
+        city_name = request.form['city-name']
+        spr = request.form['spr']
+
+        # Legal Case Data
+        date_of_complaint = request.form['date-of-complaint']
+        complaint_details = request.form.get('complaint-details', '')
+        court_case = request.form['court-case']
+        case_description = request.form.get('case-description', '')
+
+        # Lady Details
+        lady_name = request.form['lady-name']
+        lady_address = request.form['lady-address']
+        lady_banker = request.form['lady-banker']
+        lady_acct_number = request.form['lady-acct-number']
+        lady_ifsc = request.form['lady-ifsc']
+        date_of_affidavit = request.form['date-of-affidavit']
+
+        # File Uploads
+        upload_affidavit = request.files['upload-affidavit'].filename 
+
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        print("[DEBUG] Database connected")
+
+        # Insert into basic_info
+        c.execute('''
+            INSERT OR REPLACE INTO basic_info (army_number, unit, rank, name, pcda_acct, 
+                                               date_of_enrolment, date_of_present_rank, 
+                                               date_of_retirement, date_of_marriage, hra, 
+                                               city_name, spr)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (army_number, unit, rank, name, pcda_acct, date_of_enrolment, 
+              date_of_present_rank, date_of_retirement, date_of_marriage, hra, 
+              city_name, spr))
+
+        # Insert into legal_cases
+        c.execute('''
+            INSERT OR REPLACE INTO legal_cases (army_number, date_of_complaint, 
+                                                complaint_details, court_case, case_description)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (army_number, date_of_complaint, complaint_details, court_case, case_description))
+
+        # Insert into lady_details
+        c.execute('''
+            INSERT OR REPLACE INTO lady_details (army_number, lady_name, lady_address, 
+                                                 lady_banker, lady_acct_number, lady_ifsc, 
+                                                 date_of_affidavit)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (army_number, lady_name, lady_address, lady_banker, 
+              lady_acct_number, lady_ifsc, date_of_affidavit))
+
+        # Insert into uploads
+        c.execute('''
+            INSERT OR REPLACE INTO uploads (army_number, upload_affidavit)
+            VALUES (?, ?)
+        ''', (army_number, upload_affidavit))
+
+        conn.commit()
+        print("[DEBUG] Data committed to database")
+        conn.close()
+        print("[DEBUG] Database connection closed")
+
+        return jsonify({'success': True, 'message': 'Data saved successfully!'})
+
+    except Exception as e:
+        print(f"[ERROR] Exception occurred: {e}")
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/submit_basic_info_jco', methods=['POST'])
+def submit_basic_info_jco():
+    try:
+        print("[DEBUG] Received request to submit basic info")
+        
+        army_number = request.form['army-number']
+        unit = request.form['unit']
+        rank = request.form['rank']
+        name = request.form['name']
+        pcda_acct = request.form.get('pcda-acct') or None
+        date_of_enrolment = request.form.get('date-of-enrolment') or None
+
         date_of_present_rank = request.form['date-of-present-rank']
         date_of_retirement = request.form['date-of-retirement']
         date_of_marriage = request.form['date-of-marriage']

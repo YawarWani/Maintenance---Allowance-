@@ -105,28 +105,85 @@
   
     
   </style>
+<style>   
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none;
+    margin-left: 7px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.radio-group label {
+    margin-right: 15px;
+}
+.success-message {
+    color: green;
+    margin-top: 10px;
+}
+.submit-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}</style>
+<style>
+/* Fullscreen overlay */
+.overlay-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* dim background */
+  z-index: 9999; /* high enough to be above everything */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Spinner animation */
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spin keyframes */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 </head>
 <body>
+    <div id="form-loader" class="overlay-loader" style="display: none;">
+        <div class="spinner"></div>
+      </div>
+      
     <header>
         <h1>Maintenance Allowance Management System</h1>
         <div class="underline"></div>
     </header>
     <hr>
-    <nav>
+    <nav style="text-align: center;">
         <button onclick="showSection('home')">Home</button>
-        <button onclick="showSection('role-selection')">Basic info</button>
-        <button onclick="showSection('nok-details')">Details of NOK</button>
-        <button onclick="showSection('facilities-availed')">Facilities Availed</button>
-        <button onclick="showSection('documents-input')">Documents Input</button>
-        <button onclick="showSection('matrix-ma')">Matrix for MA</button>
-        <button onclick="showSection('analysis')">Recom of Cdrs</button>
-        <button onclick="showSection('additional-inputs')">Additional Inputs</button>
+        <!-- <button onclick="showSection('role-selection')">Basic info</button> -->
+        <!-- <button onclick="showSection('nok-details')">Details of NOK</button> -->
+        <!-- <button onclick="showSection('facilities-availed')">Facilities Availed</button> -->
+        <!-- <button onclick="showSection('documents-input')">Documents Input</button> -->
+        <!-- <button onclick="showSection('matrix-ma')">Matrix for MA</button> -->
+        <!-- <button onclick="showSection('analysis')">Recom of Cdrs</button> -->
+        <!-- <button onclick="showSection('additional-inputs')">Additional Inputs</button> -->
         <button onclick="showSection('calculate-ma')">Calculate MA</button>
         <button onclick="showSection('generate-documents')">Generate Documents</button>
         <!-- Add this button at an appropriate place in your HTML -->
-        <button type="button" onclick="resetNewCase()" style="margin: 10px; padding: 10px 20px; background-color: #d9534f; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
-            New Case
-        </button>
 
     </nav>
 
@@ -165,162 +222,158 @@
             </div>
         </div>
 <!-- *********************************************************************************************************************** Enter basic BASIC DETAIL OF OFFICER -->
-        <div id="basic-info" class="content-section" style="display: none; padding: 20px;">
-            <h2 class="section-title">Basic Officer Information</h2>
-        
-            <!-- Individual's Section -->
-            <h3 class="section-subtitle">Details of the Individual</h3>
-        
-            <form id="basic-info-form" class="form-container" enctype="multipart/form-data">
-                <!-- Army Number with Fetch Button -->
-                <div class="form-group">
-                    <label for="army-number">Army Number</label>
-                        <input type="text" id="army-number" name="army-number" required>
-                </div>
-        
-                <!-- Unit -->
-                <div class="form-group">
-                    <label for="unit">Unit</label>
-                    <input type="text" id="unit" name="unit" required>
-                </div>
-        
-                <!-- Rank -->
-                <div class="form-group">
-                    <label for="rank">Rank</label>
-                    <input type="text" id="rank" name="rank" required>
-                </div>
-        
-                <!-- Name -->
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-        
-                <!-- Date of Present Rank -->
-                <div class="form-group">
-                    <label for="date-of-present-rank">Date of Present Rank</label>
-                    <input type="date" id="date-of-present-rank" name="date-of-present-rank" required>
-                </div>
-        
-                <!-- Date of Retirement -->
-                <div class="form-group">
-                    <label for="date-of-retirement">Date of Retirement</label>
-                    <input type="date" id="date-of-retirement" name="date-of-retirement" required>
-                </div>
-        
-                <!-- Date of Complaint -->
-                <div class="form-group">
-                    <label for="date-of-complaint">Date of Complaint</label>
-                    <input type="date" id="date-of-complaint" name="date-of-complaint" required>
-                </div>
-        
-                <!-- Complaint Details -->
-                <div class="form-group">
-                    <label for="complaint-details">Enter Complaint Details (Max 200 words)</label>
-                    <textarea id="complaint-details" name="complaint-details" rows="4" maxlength="1200" placeholder="Enter complaint details here..." oninput="enforceWordLimit(this, 200)" required></textarea>
-                    <small id="word-count-complaint">0 / 200 words used</small>
-                </div>
-        
-                <!-- Date of Marriage -->
-                <div class="form-group">
-                    <label for="date-of-marriage">Date of Marriage</label>
-                    <input type="date" id="date-of-marriage" name="date-of-marriage" required>
-                </div>
-        
-                <!-- HRA Selection -->
-                <div class="form-group">
-                    <label>HRA claimed for Class of City</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="hra" value="X" required> X</label>
-                        <label><input type="radio" name="hra" value="Y" required> Y</label>
-                        <label><input type="radio" name="hra" value="Z" required> Z</label>
-                    </div>
-                </div>
-        
-                <!-- City Name -->
-                <div class="form-group">
-                    <label for="city-name">Name of City</label>
-                    <input type="text" id="city-name" name="city-name" required>
-                </div>
-        
-                <!-- SPR -->
-                <div class="form-group">
-                    <label for="spr">SPR</label>
-                    <input type="text" id="spr" name="spr" required>
-                </div>
-        
-                <!-- Ongoing Court Case -->
-                <div class="form-group">
-                    <label>Any Ongoing Court Case</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="court-case" value="yes" required> Yes</label>
-                        <label><input type="radio" name="court-case" value="no" required> No</label>
-                    </div>
-                </div>
-        
-                <!-- Case Details -->
-                <div class="form-group">
-                    <label for="case-description">Details of the Case (Max 100 words)</label>
-                    <textarea id="case-description" name="case-description" rows="4" maxlength="600" placeholder="Enter case details here..." oninput="enforceWordLimit(this, 100)"></textarea>
-                    <small id="word-count-message">0 / 100 words used</small>
-                </div>
-        
-                <!-- Lady's Section -->
-                <h2 class="section-title">Details of the Lady</h2>
-        
-                <!-- Lady's Name -->
-                <div class="form-group">
-                    <label for="lady-name">Lady's Name</label>
-                    <input type="text" id="lady-name" name="lady-name" required>
-                </div>
-        
-                <!-- Lady's Address -->
-                <div class="form-group">
-                    <label for="lady-address">Lady's Address</label>
-                    <input type="text" id="lady-address" name="lady-address" required>
-                </div>
-        
-                <!-- Lady's Banker's Name -->
-                <div class="form-group">
-                    <label for="lady-banker">Lady's Banker's Name</label>
-                    <input type="text" id="lady-banker" name="lady-banker" required>
-                </div>
-        
-                <!-- Lady's Bank Account Number -->
-                <div class="form-group">
-                    <label for="lady-acct-number">Lady's Bank Account Number</label>
-                    <input type="text" id="lady-acct-number" name="lady-acct-number" required>
-                </div>
-        
-                <!-- Lady's Bank IFSC Code -->
-                <div class="form-group">
-                    <label for="lady-ifsc">Lady's Bank IFSC Code</label>
-                    <input type="text" id="lady-ifsc" name="lady-ifsc" required>
-                </div>
-        
-                <!-- Date of Affidavit -->
-                <div class="form-group">
-                    <label for="date-of-affidavit">Date of Affidavit</label>
-                    <input type="date" id="date-of-affidavit" name="date-of-affidavit" required>
-                </div>
-        
-                <!-- Upload Affidavit -->
-                <div class="form-group">
-                    <label for="upload-affidavit">Upload Affidavit (.pdf, .jpg, .docx)</label>
-                    <input type="file" id="upload-affidavit" name="upload-affidavit" accept=".pdf, .jpg, .docx" required>
-                </div>
-        
-                <!-- Success Message -->
-                <div id="success-message" class="success-message" style="display: none;">
-                    Data saved successfully!
-                </div>
-        
-                <!-- Submit Button -->
-                <div class="form-group">
-                    <button type="submit" onclick="saveFormOfficer(event)" class="submit-btn">Submit Basic Info</button>
-                </div>
-            </form>
+<div id="basic-info" class="content-section" style="padding: 20px;">
+    <h2 class="section-title">Basic Officer Information</h2>
+    
+    <h3 class="section-subtitle">Details of the Individual</h3>
+    
+    <form id="basic-info-form" class="form-container" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="army-number">Army Number</label>
+            <input type="text" id="army-number" name="army-number" required> <br>
+            <span class="error-message" id="army-number-error"></span>
         </div>
+
+        <div class="form-group">
+            <label for="unit">Unit</label>
+            <input type="text" id="unit" name="unit" required>
+            <span class="error-message" id="unit-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="rank">Rank</label>
+            <input type="text" id="rank" name="rank" required>
+            <span class="error-message" id="rank-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+            <span class="error-message" id="name-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="date-of-present-rank">Date of Present Rank</label>
+            <input type="date" id="date-of-present-rank" name="date-of-present-rank" required>
+            <span class="error-message" id="date-of-present-rank-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="date-of-retirement">Date of Retirement</label>
+            <input type="date" id="date-of-retirement" name="date-of-retirement" required>
+            <span class="error-message" id="date-of-retirement-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="date-of-complaint">Date of Complaint</label>
+            <input type="date" id="date-of-complaint" name="date-of-complaint" required>
+            <span class="error-message" id="date-of-complaint-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="complaint-details">Enter Complaint Details (Max 200 words)</label>
+            <textarea id="complaint-details" name="complaint-details" rows="4" maxlength="1200" placeholder="Enter complaint details here..." required></textarea>
+            <small id="word-count-complaint">0 / 200 words used</small>
+            <span class="error-message" id="complaint-details-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="date-of-marriage">Date of Marriage</label>
+            <input type="date" id="date-of-marriage" name="date-of-marriage" required>
+            <span class="error-message" id="date-of-marriage-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label>HRA claimed for Class of City</label>
+            <div class="radio-group">
+                <label><input type="radio" name="hra" value="X" required> X</label>
+                <label><input type="radio" name="hra" value="Y"> Y</label>
+                <label><input type="radio" name="hra" value="Z"> Z</label>
+            </div>
+            <span class="error-message" id="hra-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="city-name">Name of City</label>
+            <input type="text" id="city-name" name="city-name" required>
+            <span class="error-message" id="city-name-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="spr">SPR</label>
+            <input type="text" id="spr" name="spr" required>
+            <span class="error-message" id="spr-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Any Ongoing Court Case</label>
+            <div class="radio-group">
+                <label><input type="radio" name="court-case" value="yes" required> Yes</label>
+                <label><input type="radio" name="court-case" value="no"> No</label>
+            </div>
+            <span class="error-message" id="court-case-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="case-description">Details of the Case (Max 100 words)</label>
+            <textarea id="case-description" name="case-description" rows="4" maxlength="600" placeholder="Enter case details here..."></textarea>
+            <small id="word-count-message">0 / 100 words used</small>
+            <span class="error-message" id="case-description-error"></span>
+        </div>
+
+        <h2 class="section-title">Details of the Lady</h2>
+
+        <div class="form-group">
+            <label for="lady-name">Lady's Name</label>
+            <input type="text" id="lady-name" name="lady-name" required>
+            <span class="error-message" id="lady-name-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="lady-address">Lady's Address</label>
+            <input type="text" id="lady-address" name="lady-address" required>
+            <span class="error-message" id="lady-address-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="lady-banker">Lady's Banker's Name</label>
+            <input type="text" id="lady-banker" name="lady-banker" required>
+            <span class="error-message" id="lady-banker-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="lady-acct-number">Lady's Bank Account Number</label>
+            <input type="text" id="lady-acct-number" name="lady-acct-number" required>
+            <span class="error-message" id="lady-acct-number-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="lady-ifsc">Lady's Bank IFSC Code</label>
+            <input type="text" id="lady-ifsc" name="lady-ifsc" required>
+            <span class="error-message" id="lady-ifsc-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="date-of-affidavit">Date of Affidavit</label>
+            <input type="date" id="date-of-affidavit" name="date-of-affidavit" required>
+            <span class="error-message" id="date-of-affidavit-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="upload-affidavit">Upload Affidavit (.pdf, .jpg, .docx)</label>
+            <input type="file" id="upload-affidavit" name="upload-affidavit" accept=".pdf, .jpg, .docx" required>
+            <span class="error-message" id="upload-affidavit-error"></span>
+        </div>
+
+        <div id="success-message" class="success-message" style="display: none;">
+            Data saved successfully!
+        </div>
+
+        <div class="form-group">
+            <button type="submit" onclick="saveFormOfficer(event)" class="submit-btn">Submit Basic Info</button>
+        </div>
+    </form>
+</div>
       
 <!-- !****************************************************************************************************THE BELOW FORM IS FOR JCO ONLY ----------------------------------------------  -->
         <!-- this is for jco only -->
@@ -330,11 +383,11 @@
             <!-- Individual's Section -->
             <h3 class="section-subtitle">Details of the Individual</h3>
         
-            <form id="basic-info-form" class="form-container">
+            <form id="basic-info-form-jco" class="form-container">
                 <!-- Army Number with Fetch Button -->
                 <div class="form-group">
                     <label for="army-number">Army Number JCO TAB</label>
-                        <input type="text" id="army-number" name="army-number" required>
+                        <input type="text" id="army-number" name="armyNumber" required>
                 </div>
         
                 <!-- Unit -->
@@ -1094,34 +1147,77 @@
     function fetchCaseDetails(){
         alert("work to be done")
     }
-      function showSection(sectionId) {
-    console.log("before section within section")
-    const sections = document.querySelectorAll('.content-section');
-    console.log(sections, "these are sections");
+//       function showSection(sectionId) {
+//     console.log("before section within section")
+//     const sections = document.querySelectorAll('.content-section');
+//     console.log(sections, "these are sections");
 
-    sections.forEach(section => {
-        section.style.display = 'none';
-    });
+//     sections.forEach(section => {
+//         section.style.display = 'none';
+//     });
 
-    const selectedSection = document.getElementById(sectionId);
-    console.log(selectedSection, "current section");
-    if (selectedSection) {
-        selectedSection.style.display = 'block';
-    }
+//     const selectedSection = document.getElementById(sectionId);
+//     console.log(selectedSection, "current section");
+//     if (selectedSection) {
+//         selectedSection.style.display = 'block';
+//     }
 
-    // Remove 'active' class from all buttons
-    const buttons = document.querySelectorAll("nav button");
-    buttons.forEach(button => {
-        // button.classList.remove("active");
-    });
+//     // Remove 'active' class from all buttons
+//     const buttons = document.querySelectorAll("nav button");
+//     buttons.forEach(button => {
+//         // button.classList.remove("active");
+//     });
 
-    // Add 'active' class to the clicked button
-    const activeButton = document.querySelector(`nav button[onclick="showSection('${sectionId}')"]`);
-    if (activeButton) {
-        activeButton.classList.add("active");
-        console.log(activeButton, "active button");
-    }
+//     // Add 'active' class to the clicked button
+//     const activeButton = document.querySelector(`nav button[onclick="showSection('${sectionId}')"]`);
+//     if (activeButton) {
+//         activeButton.classList.add("active");
+//         console.log(activeButton, "active button");
+//     }
+// }
+function showSection(sectionId) {
+    const loader = document.getElementById('form-loader');
+    if (loader) loader.style.display = 'flex'; // show loader overlay
+
+    setTimeout(() => {
+        // Hide all content sections
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Show the selected section
+        const selectedSection = document.getElementById(sectionId);
+        if (selectedSection) {
+            selectedSection.style.display = 'block';
+        }
+
+        // ✅ Reset all button styles
+        const buttons = document.querySelectorAll("nav button");
+        buttons.forEach(button => {
+            button.style.backgroundColor = ''; // reset
+            button.style.color = '';
+            button.style.fontWeight = '';
+            button.style.borderRadius = '';
+        });
+
+        // ✅ Highlight the active button with custom inline styles
+        const activeButton = document.querySelector(`nav button[onclick="showSection('${sectionId}')"]`);
+        if (activeButton) {
+            activeButton.style.backgroundColor = '#3498db';
+            activeButton.style.color = 'white';
+            activeButton.style.fontWeight = 'bold';
+            activeButton.style.borderRadius = '5px';
+        }
+
+        // Hide loader
+        if (loader) loader.style.display = 'none';
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
 }
+
 
 
         </script>     
@@ -1219,198 +1315,218 @@ function cancelGeneration() {
 // UPDATED FUNCTION 
     </script>
         
-    <script>
-       function validateArmyNumber(value) {
-    console.log(value);
-    const regex = /^(?=.*[A-Za-z])[A-Za-z0-9]+$/; // Must contain at least one letter, allows only alphanumeric
-    return regex.test(value);
-}
-
-
-    function validateUnit(value) {
-        const regex = /^[A-Za-z0-9\s]+$/; // Unit name can have only alphanumeric characters and spaces
-        return regex.test(value);
-    }
-
-    function validateRank(value) {
-        const regex = /^[A-Za-z0-9\s]+$/; // Rank can have only alphanumeric characters and spaces
-        return regex.test(value);
-    }
-
-    // Validate Date of Present Rank should be less than Date of Retirement
-    function validateDates(dateOfPresentRank, dateOfRetirement) {
-        return new Date(dateOfPresentRank) < new Date(dateOfRetirement);
-    }
-
-    function validateMarriageDate(date_of_marriage, date_of_complaint) {
-        return new Date(date_of_marriage) < new Date(date_of_complaint);
-    }
-
-   
-
-    </script>
-       
-    <script>
-        
-
-        function saveFormOfficer(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const form = document.getElementById('basic-info-form');
-            const formData = new FormData(form);
-            const armyNumber = formData.get("army-number"); // Extract Army Number
-            console.log(formData)
-            // Validate Army Number
-        if (!validateArmyNumber(armyNumber)) {
-            console.log(armyNumber)
-            alert("Army number should start and end with an alphabet and contain only alphanumeric characters.");
-            return;
-        }
-
-        // Validate Unit
-        const unit = formData.get("unit").trim();
-        if (!validateUnit(unit)) {
-            alert("Unit name can only contain alphanumeric characters and spaces.");
-            return;
-        }
-
-        // Validate Rank
-        const rank = formData.get("rank").trim();
-        if (!validateRank(rank)) {
-            alert("Rank can only contain alphanumeric characters and spaces.");
-            return;
-        }
-
-        // Validate Date of Present Rank and Date of Retirement
-        const dateOfPresentRank = formData.get("date-of-present-rank");
-        const dateOfRetirement = formData.get("date-of-retirement");
-        if (!validateDates(dateOfPresentRank, dateOfRetirement)) {
-            alert("Date of Present Rank must be less than Date of Retirement.");
-            return;
-        }
-        
-        const date_of_complaint = formData.get("date-of-complaint");
-        const date_of_marriage = formData.get("date-of-marriaget");
-        if (!validateMarriageDate(date_of_marriage,date_of_complaint )) {
-            alert("Date of Marriage  must be less than Date of Complaint.");
-            return;
-        }
-        // Validate Complaint Details Word Count
-        const complaintDetails = formData.get("complaint-details");
-        const complaintWordCount = complaintDetails.split(/\s+/).filter(Boolean).length;
-        if (complaintWordCount > 200) {
-            alert("Complaint details cannot exceed 200 words.");
-            return;
-        }
-
-        // Validate Lady's Details Form
-        const ladyName = formData.get("lady-name").trim();
-        if (!ladyName || !validateUnit(ladyName)) {
-            alert("Lady's Name is required and can contain only alphanumeric characters and spaces.");
-            return;
-        }
-
-        const ladyAddress = formData.get("lady-address").trim();
-        if (!ladyAddress || !validateUnit(ladyAddress)) {
-            alert("Lady's Address is required and can contain only alphanumeric characters and spaces.");
-            return;
-        }
-
-        const ladyBanker = formData.get("lady-banker").trim();
-        if (!ladyBanker || !validateUnit(ladyBanker)) {
-            alert("Lady's Banker's Name is required and can contain only alphanumeric characters and spaces.");
-            return;
-        }
-
-        const ladyAcctNumber = formData.get("lady-acct-number").trim();
-        if (!ladyAcctNumber || !/^[0-9]+$/.test(ladyAcctNumber)) {
-            alert("Lady's Bank Account Number is required and must contain only digits.");
-            return;
-        }
-
-        const ladyIfsc = formData.get("lady-ifsc").trim();
-        if (!ladyIfsc || !/^[A-Za-z0-9]+$/.test(ladyIfsc)) {
-            alert("Lady's Bank IFSC Code is required and must contain only alphanumeric characters.");
-            return;
-        }
-
-        const dateOfAffidavit = formData.get("date-of-affidavit");
-        if (!dateOfAffidavit) {
-            alert("Date of Affidavit is required.");
-            return;
-        }
-
-        const uploadAffidavit = document.getElementById("upload-affidavit").files.length;
-        if (uploadAffidavit === 0) {
-            alert("Please upload an affidavit file.");
-            return;
-        }
-        
-     console.log(formData)
-        // alert(jsonObject)    
-            fetch('/submit_basic_info_officer', {
-                method: 'POST',
-                body:formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Store the Army Number in session storage
-                    alert("basic details of Officer got saved succesffully..........")
-                    sessionStorage.setItem("armyNumber", armyNumber);
-
-                    // Update all section headings with the Army Number
-                    updateArmyNumberDisplay(armyNumber);
-
-                    // Show success message
-                    document.getElementById('success-message').textContent = "Data saved successfully!";
-                    document.getElementById('success-message').style.display = 'block';
-                    form.reset();
-                } else {
-                    alert('Error: ' + data.message);
-
-                }
-            })
-            .catch(error => {
-                alert('An error occurred: ' + error.message);
-            });
-        }
-
-        function updateArmyNumberDisplay(armyNumber) {
-            // Find all <span id="army-number-display"> elements and update them
-            document.querySelectorAll("#army-number-display").forEach(span => {
-                span.textContent = `(Army No: ${armyNumber})`;
-            });
-        }
-
-        // Ensure Army Number persists on page reload
-        window.onload = function () {
-            const storedArmyNumber = sessionStorage.getItem("armyNumber");
-            if (storedArmyNumber) {
-                updateArmyNumberDisplay(storedArmyNumber);
+        <script>
+            function validateArmyNumber(value) {
+                const regex = /^[A-Z]+[0-9]*[A-Z]$/;
+                return regex.test(value);
             }
-        };
-
-        window.onload = function () {
-        const storedSection = sessionStorage.getItem("currentSection") || "home";
-        showSection(storedSection);
-    };
-    function enforceWordLimit(textarea, limit, wordCountElementId) {
-    let words = textarea.value.trim().split(/\s+/).filter(Boolean);
-    let wordCount = words.length;
-
-    // Update the word count display
-    let wordCountElement = document.getElementById(wordCountElementId);
-    console.log("before error")
-    wordCountElement.innerText = `${wordCount} / ${limit} words used`;
-
-    // If the word count exceeds the limit, trim the text
-    if (wordCount > limit) {
-        textarea.value = words.slice(0, limit).join(" ");
-        wordCountElement.innerText = `${limit} / ${limit} words used`;
-    }
-}
-</script>
+    
+            function validateUnit(value) {
+                const regex = /^[A-Za-z0-9\s]+$/;
+                return regex.test(value);
+            }
+    
+            function validateRank(value) {
+                const regex = /^[A-Za-z0-9\s]+$/;
+                return regex.test(value);
+            }
+    
+            function validateDates(dateOfPresentRank, dateOfRetirement) {
+                return new Date(dateOfPresentRank) < new Date(dateOfRetirement);
+            }
+    
+            function validateMarriageDate(dateOfMarriage, dateOfComplaint) {
+                return new Date(dateOfMarriage) < new Date(dateOfComplaint);
+            }
+    
+            function showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.textContent = message;
+                errorElement.style.display = message ? 'block' : 'none';
+            }
+    
+            function validateFormField(fieldName, value) {
+                switch(fieldName) {
+                    case 'army-number':
+                        if (!validateArmyNumber(value)) {
+                            showError('army-number-error', 'Must start and end with a letter, numbers optional in between,in upper case');
+                            return false;
+                        }
+                        showError('army-number-error', '');
+                        return true;
+    
+                    case 'unit':
+                    case 'rank':
+                    case 'lady-name':
+                    case 'lady-address':
+                    case 'lady-banker':
+                        if (!validateUnit(value)) {
+                            showError(`${fieldName}-error`, 'Only alphanumeric characters and spaces allowed');
+                            return false;
+                        }
+                        showError(`${fieldName}-error`, '');
+                        return true;
+    
+                    case 'lady-acct-number':
+                        if (!/^[0-9]+$/.test(value)) {
+                            showError('lady-acct-number-error', 'Must contain only digits');
+                            return false;
+                        }
+                        showError('lady-acct-number-error', '');
+                        return true;
+    
+                    case 'lady-ifsc':
+                        if (!/^[A-Za-z0-9]+$/.test(value)) {
+                            showError('lady-ifsc-error', 'Must contain only alphanumeric characters');
+                            return false;
+                        }
+                        showError('lady-ifsc-error', '');
+                        return true;
+                }
+                return true;
+            }
+    
+            function validateDatesOnInput() {
+                const dateOfPresentRank = document.getElementById('date-of-present-rank').value;
+                const dateOfRetirement = document.getElementById('date-of-retirement').value;
+                const dateOfMarriage = document.getElementById('date-of-marriage').value;
+                const dateOfComplaint = document.getElementById('date-of-complaint').value;
+    
+                if (dateOfPresentRank && dateOfRetirement) {
+                    if (!validateDates(dateOfPresentRank, dateOfRetirement)) {
+                        showError('date-of-present-rank-error', 'Must be earlier than retirement date');
+                    } else {
+                        showError('date-of-present-rank-error', '');
+                    }
+                }
+    
+                if (dateOfMarriage && dateOfComplaint) {
+                    if (!validateMarriageDate(dateOfMarriage, dateOfComplaint)) {
+                        showError('date-of-marriage-error', 'Must be earlier than complaint date');
+                    } else {
+                        showError('date-of-marriage-error', '');
+                    }
+                }
+            }
+    
+            function enforceWordLimit(textarea, limit) {
+                let words = textarea.value.trim().split(/\s+/).filter(Boolean);
+                let wordCount = words.length;
+                const wordCountElement = textarea.nextElementSibling;
+                wordCountElement.innerText = `${wordCount} / ${limit} words used`;
+    
+                if (wordCount > limit) {
+                    textarea.value = words.slice(0, limit).join(' ');
+                    showError(`${textarea.id}-error`, `Cannot exceed ${limit} words`);
+                } else {
+                    showError(`${textarea.id}-error`, '');
+                }
+            }
+    
+            function saveFormOfficer(event) {
+                event.preventDefault();
+                const form = document.getElementById('basic-info-form');
+                const formData = new FormData(form);
+                
+                let isValid = true;
+                
+                const fieldsToValidate = [
+                    'army-number', 'unit', 'rank', 'lady-name', 
+                    'lady-address', 'lady-banker', 'lady-acct-number', 'lady-ifsc'
+                ];
+    
+                fieldsToValidate.forEach(field => {
+                    const value = formData.get(field)?.trim() || '';
+                    if (!validateFormField(field, value)) {
+                        isValid = false;
+                    }
+                });
+    
+                const dateOfPresentRank = formData.get('date-of-present-rank');
+                const dateOfRetirement = formData.get('date-of-retirement');
+                if (dateOfPresentRank && dateOfRetirement && !validateDates(dateOfPresentRank, dateOfRetirement)) {
+                    showError('date-of-present-rank-error', 'Must be earlier than retirement date');
+                    isValid = false;
+                }
+    
+                const dateOfMarriage = formData.get('date-of-marriage');
+                const dateOfComplaint = formData.get('date-of-complaint');
+                if (dateOfMarriage && dateOfComplaint && !validateMarriageDate(dateOfMarriage, dateOfComplaint)) {
+                    showError('date-of-marriage-error', 'Must be earlier than complaint date');
+                    isValid = false;
+                }
+    
+                const complaintDetails = formData.get('complaint-details');
+                const complaintWordCount = complaintDetails.split(/\s+/).filter(Boolean).length;
+                if (complaintWordCount > 200) {
+                    showError('complaint-details-error', 'Cannot exceed 200 words');
+                    isValid = false;
+                }
+    
+                const caseDescription = formData.get('case-description');
+                if (caseDescription) {
+                    const caseWordCount = caseDescription.split(/\s+/).filter(Boolean).length;
+                    if (caseWordCount > 100) {
+                        showError('case-description-error', 'Cannot exceed 100 words');
+                        isValid = false;
+                    }
+                }
+    
+                const uploadAffidavit = document.getElementById('upload-affidavit').files.length;
+                if (uploadAffidavit === 0) {
+                    showError('upload-affidavit-error', 'Please upload an affidavit');
+                    isValid = false;
+                }
+    
+                if (!isValid) return;
+    
+                fetch('/submit_basic_info_officer', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const armyNumber = formData.get('army-number');
+                        sessionStorage.setItem('armyNumber', armyNumber);
+                        updateArmyNumberDisplay(armyNumber);
+                        document.getElementById('success-message').style.display = 'block';
+                        showSection('nok-details')
+                        // form.reset();
+                    } else {
+                        showError('form-error', data.message);
+                    }
+                })
+                .catch(error => {
+                    showError('form-error', 'An error occurred: ' + error.message);
+                });
+            }
+    
+            function updateArmyNumberDisplay(armyNumber) {
+                document.querySelectorAll("#army-number-display").forEach(span => {
+                    span.textContent = `(Army No: ${armyNumber})`;
+                });
+            }
+    
+            document.querySelectorAll('#basic-info-form input, #basic-info-form textarea').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.type === 'date') {
+                        validateDatesOnInput();
+                    } else if (this.tagName === 'TEXTAREA') {
+                        enforceWordLimit(this, this.id === 'complaint-details' ? 200 : 100);
+                    } else {
+                        validateFormField(this.name, this.value.trim());
+                    }
+                });
+            });
+    
+            window.onload = function () {
+                const storedArmyNumber = sessionStorage.getItem("armyNumber");
+                if (storedArmyNumber) {
+                    updateArmyNumberDisplay(storedArmyNumber);
+                }
+            };
+        </script>
  <!-- <!-***************************************************************************************************************************THE BELOW SCRIPT IS  FOR JCO FORM --> 
 <script>
     
@@ -1468,26 +1584,25 @@ function cancelGeneration() {
     attachWordCountListener("case-description", 100, "word-count-message");
 
     // ✅ Validation Functions
-    function validateArmyNumber1(value) {
-        console.log(value)
-        console.log("this is called");
+    function validateArmyNumberjco(value) {
+        alert(value)
         const regex = /^(?=.*[A-Za-z])[A-Za-z0-9]*[A-Za-z]$/; // Must contain at least one letter and end with an alphabet
         return regex.test(value);
     }
 
-    function validateUnit(value) {
+    function validateUnitjco(value) {
         const regex = /^[A-Za-z0-9\s]+$/; // Only alphanumeric characters and spaces
         return regex.test(value);
     }
 
-    function validateRank(value) {
+    function validateRankjco(value) {
         return validateUnit(value); // Same validation rule as Unit
     }
 
-    function validateDates(dateOfPresentRank, dateOfRetirement) {
+    function validateDatesjco(dateOfPresentRank, dateOfRetirement) {
         return new Date(dateOfPresentRank) < new Date(dateOfRetirement);
     }
-    function validateMarriageDate(date_of_marriage, date_of_complaint) {
+    function validateMarriageDatejco(date_of_marriage, date_of_complaint) {
         return new Date(date_of_marriage) < new Date(date_of_complaint);
     }
 
@@ -1495,33 +1610,34 @@ function cancelGeneration() {
     function saveFormJCO(event) {
         event.preventDefault(); // Prevent default form submission
 
-        const form = document.getElementById('basic-info-form');
+        const form = document.getElementById('basic-info-form-jco');
         const formData = new FormData(form);
-        const armyNumber = formData.get("army-number");
-        alert("this is armyNumber")
-        console.log(formData);
+        const armyNumber = formData.get("armyNumber");
+        console.log(armyNumber);
+        alert(armyNumber)
 
-        if (!validateArmyNumber(armyNumber)) {
-            console.log(armyNumber)
+        if (!validateArmyNumberjco(armyNumber)) {
+            
+            alert("Invalid Army number")
             return;
         }
 
         const unit = formData.get("unit").trim();
-        if (!validateUnit(unit)) {
+        if (!validateUnitjco(unit)) {
             alert("Unit name can only contain alphanumeric characters and spaces.");
             return;
         }
         
 
         const rank = formData.get("rank").trim();
-        if (!validateRank(rank)) {
+        if (!validateRankjco(rank)) {
             alert("Rank can only contain alphanumeric characters and spaces.");
             return;
         }
 
         const dateOfPresentRank = formData.get("date-of-present-rank");
         const dateOfRetirement = formData.get("date-of-retirement");
-        if (!validateDates(dateOfPresentRank, dateOfRetirement)) {
+        if (!validateDatesjco(dateOfPresentRank, dateOfRetirement)) {
             alert("Date of Present Rank must be less than Date of Retirement.");
             return;
         }
@@ -1534,24 +1650,24 @@ function cancelGeneration() {
         }
 
         const ladyName = formData.get("lady-name").trim();
-        if (!ladyName || !validateUnit(ladyName)) {
+        if (!ladyName || !validateUnitjco(ladyName)) {
             alert("Lady's Name is required and can contain only alphanumeric characters and spaces.");
             return;
         }
 
         const ladyAddress = formData.get("lady-address").trim();
-        if (!ladyAddress || !validateUnit(ladyAddress)) {
+        if (!ladyAddress || !validateUnitjco(ladyAddress)) {
             alert("Lady's Address is required and can contain only alphanumeric characters and spaces.");
             return;
         }
 
         const ladyBanker = formData.get("lady-banker").trim();
-        if (!ladyBanker || !validateUnit(ladyBanker)) {
+        if (!ladyBanker || !validateUnitjco(ladyBanker)) {
             alert("Lady's Banker's Name is required and can contain only alphanumeric characters and spaces.");
             return;
         }
         const pcda_acct = formData.get("pcda-acct").trim();
-        if (!pcda_acct || !validateUnit(pcda_acct)) {
+        if (!pcda_acct || !validateUnitjco(pcda_acct)) {
             alert("PCDA account is required and can contain only alphanumeric characters and spaces.");
             return;
         }
@@ -1588,10 +1704,11 @@ function cancelGeneration() {
         .then(data => {
             if (data.success) {
                 sessionStorage.setItem("armyNumber", armyNumber);
-                updateArmyNumberDisplay(armyNumber);
+                updateArmyNumberDisplayjco(armyNumber);
                 alert("Details for JCO are successfylly inserted............")
                 document.getElementById('success-message').textContent = "Data saved successfully!";
                 document.getElementById('success-message').style.display = 'block';
+                showSection('nok-details')
                 form.reset();
             } else {
                 alert('Error: ' + data.message);
@@ -1602,7 +1719,7 @@ function cancelGeneration() {
         });
     }
 
-    function updateArmyNumberDisplay(armyNumber) {
+    function updateArmyNumberDisplayjco(armyNumber) {
         document.querySelectorAll("#army-number-display").forEach(span => {
             span.textContent = `(Army No: ${armyNumber})`;
         });
@@ -1612,7 +1729,7 @@ function cancelGeneration() {
     window.onload = function () {
         const storedArmyNumber = sessionStorage.getItem("armyNumber");
         if (storedArmyNumber) {
-            updateArmyNumberDisplay(storedArmyNumber);
+            updateArmyNumberDisplayjco(storedArmyNumber);
         }
         const storedSection = sessionStorage.getItem("currentSection") || "home";
         showSection(storedSection);
@@ -1890,6 +2007,7 @@ function toggleJointAccountDetails(show) {
                 if (data.success) {
                     alert('NOK details submitted successfully!');
                     document.getElementById('nok-table').querySelector('tbody').innerHTML = '';
+                    showSection('facilities-availed')
                 } else {
                     alert('Failed to submit NOK details: ' + data.message);
                 }
@@ -2010,6 +2128,7 @@ function calculateAge() {
                     successMessage.textContent = data.message;
                     successMessage.style.display = 'block';
                     setTimeout(() => successMessage.style.display = 'none', 3000);
+                    showSection('documents-input')
                     form.reset();
                 } else {
                     alert('Failed to submit facilities availed.');
@@ -2064,6 +2183,7 @@ function calculateAge() {
                     successMessage.textContent = data.message;
                     successMessage.style.display = 'block';
                     setTimeout(() => successMessage.style.display = 'none', 3000);
+                    showSection('matrix-ma')
                     form.reset(); // Clears form only on success
                 } else {
                     console.error("[ERROR] Failed to upload documents:", data.message); // Debugging Log
@@ -2153,6 +2273,7 @@ function calculateAge() {
                     successMessage.textContent = "Matrix data submitted successfully!";
                     successMessage.style.display = 'block';
                     setTimeout(() => successMessage.style.display = 'none', 3000);
+                    showSection('analysis')
                     form.reset(); // Reset form only on success
                 } else {
                     console.error("[ERROR] Failed to save matrix data:", data.message);
@@ -2192,6 +2313,7 @@ function calculateAge() {
                     successMessage.textContent = data.message;
                     successMessage.style.display = 'block';
                     setTimeout(() => successMessage.style.display = 'none', 3000);
+                    showSection('additional-inputs')
                     form.reset();
                 } else {
                     alert('Failed to upload analysis data.');
@@ -2263,6 +2385,7 @@ function submitAdditionalInputs() {
                 setTimeout(() => {
                     successMessage.style.display = 'none';
                 }, 3000);
+                showSection('calculate-ma')
                 
                 form.reset();
             } else {
@@ -2426,7 +2549,6 @@ document.getElementById("refer-historical-cases-btn").addEventListener("click", 
 });
 function fetchMADetails() {
     let armyNumber = sessionStorage.getItem("armyNumber");
-    armyNumber = "IC77512L";
     if (!armyNumber) {
         alert("Army number is missing. Please enter the details first.");
         return;
